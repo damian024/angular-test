@@ -15,8 +15,8 @@ export const CACHE_DURATION = new HttpContextToken<number>(() => 0);
 
 @Injectable()
 export class CacheInterceptor implements HttpInterceptor {
-  private cache = new Map<string, CacheEntry>();
-  private pendingRequests = new Map<string, Observable<HttpEvent<any>>>();
+  private readonly cache = new Map<string, CacheEntry>();
+  private readonly pendingRequests = new Map<string, Observable<HttpEvent<any>>>();
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (req.method !== 'GET') {
@@ -71,7 +71,7 @@ interface CacheEntry {
   timestamp: number;
 }
 
-export function useCache(durationSeconds: number = 60 * 60 * 24): { context: HttpContext } {
+export function withCache(durationSeconds: number = 60 * 60 * 24): { context: HttpContext } {
   return {
     context: new HttpContext().set(CACHE_DURATION, durationSeconds)
   };
